@@ -1,4 +1,10 @@
-from arithmetic_arranger import *
+# This entrypoint file to be used in development. Start by reading README.md
+from pytest import main
 
-if __name__=="__main__":
-    print(arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"], True))
+from arithmetic_arranger import arithmetic_arranger
+
+print(
+  arithmetic_arranger(["3 + 855", "988 + 40"]))
+
+# Run unit tests automatically
+main(['-vv'])

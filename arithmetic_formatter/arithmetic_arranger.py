@@ -14,12 +14,13 @@ def list_dict(index):
     lastNum = int(lastNum)
   except:
     return "Error: Numbers must only contain digits."
-  
-  total = firstNum + lastNum
+
   operation = arr_index[1]
 
   if (operation != "+" and operation != "-"):
     return "Error: Operator must be '+' or '-'."
+
+  total = firstNum + lastNum if operation == "+" else firstNum - lastNum
 
   return {
     "firstNum": firstNum,
@@ -32,51 +33,56 @@ def list_dict(index):
 
 def g_char(tchar, char_length):
   string = ""
-  for i in range(0,  char_length):
+  for i in range(0, char_length):
     string += tchar
   return string
 
+
 def arithmetic_arranger(problems, show_answers=False):
   probs_length = len(problems)
-  if (probs_length > 4):
-    return "Error: too many problems."
 
   struct_problems = list(map(list_dict, problems))
 
   # structuring output and error checking
   output = ""
-  for problem in struct_problems:
+  for i, problem in enumerate(struct_problems):
     if (type(problem) == str):
       return problem
-    
-    firstNum = str(problem['firstNum']) 
+
+    firstNum = str(problem['firstNum'])
     calc_space = problem["eqLength"] - len(firstNum)
     beforefnum = "  " + g_char(" ", 0 if calc_space < 0 else calc_space)
+    afterfnum = "    " if i < len(struct_problems) - 1 else "\n"
 
-    output += beforefnum + firstNum + " "
-  
-  output += "\n"
+    output += beforefnum + firstNum + afterfnum
 
-  for problem in struct_problems:
-    lastNum = str(problem['lastNum']) 
+
+  for i, problem in enumerate(struct_problems):
+    lastNum = str(problem['lastNum'])
     calc_space = problem["eqLength"] - len(lastNum)
     beforefnum = problem["operation"] + " " + g_char(" ", 0 if calc_space < 0 else calc_space)
+    afterfnum = "    " if i < len(struct_problems) - 1 else "\n"
 
-    output += beforefnum + lastNum + " "
+    output += beforefnum + lastNum + afterfnum
 
-  output += "\n"
   
-  for problem in struct_problems:
-    output += g_char("-", problem['eqLength'] + 2) + " "
-  
-  if(show_answers):
+  for i, problem in enumerate(struct_problems):
+    afterborder = "    " if i < len(struct_problems) - 1 else ""
+    output += g_char("-", problem['eqLength'] + 2) + afterborder
+
+  if (show_answers):
     output += "\n"
 
-    for problem in struct_problems:
+    for i, problem in enumerate(struct_problems):
       total = str(problem['total'])
       calc_space = problem["eqLength"] + 2 - len(total)
       beforefnum = g_char(" ", 0 if calc_space <= 0 else calc_space)
 
-      output += beforefnum + total + " "
-      
+      afteranswer = "    " if i < len(struct_problems) - 1 else ""
+
+      output += beforefnum + total + afteranswer
+
+  if (probs_length > 5):
+    return "Error: Too many problems."
+
   return output
